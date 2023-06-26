@@ -83,7 +83,7 @@ def get_ssim_diff_image(color_image: np.ndarray, gray_image: np.ndarray) -> np.n
     color_image = cv2.resize(color_image, gray_image.shape)
 
     (_, diff) = ssim(color_image, gray_image, full=True)
-    k
+    
     return diff
 
 

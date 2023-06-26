@@ -45,6 +45,9 @@ def main():
         color_image = cv2.imread(get_color_path(label))
         gray_image = cv2.imread(get_gray_path(label))
 
+        color_image = cv2.cvtColor(color_image, cv2.COLOR_BGR2GRAY)
+        gray_image = cv2.cvtColor(gray_image, cv2.COLOR_BGR2GRAY)
+
         diff = get_ssim_diff_image(color_image, gray_image)
 
         plt.subplot(131)
@@ -77,9 +80,6 @@ def get_gray_path(label: str) -> str:
 
 
 def get_ssim_diff_image(color_image: np.ndarray, gray_image: np.ndarray) -> np.ndarray:
-    color_image = cv2.cvtColor(color_image, cv2.COLOR_BGR2GRAY)
-    gray_image = cv2.cvtColor(gray_image, cv2.COLOR_BGR2GRAY)
-
     color_image = cv2.resize(color_image, gray_image.shape)
 
     (_, diff) = ssim(color_image, gray_image, full=True)

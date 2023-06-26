@@ -19,8 +19,8 @@ def main():
     if not 'result' in df.columns:
         df['result'] = 0
 
-    start_index = int(input('start index: '))
-    end_index = int(input('end index: '))
+    start_index = int(input('START INDEX: '))
+    end_index = int(input('END INDEX: '))
 
     for i in range(start_index, min(end_index, len(df))):
         def on_key_press(event):
@@ -31,6 +31,8 @@ def main():
                 df['result'][i] = 0 
                 plt.close()
             elif event.key == UNDO_KEY:
+                if i < 1:
+                    return
                 df['result'][i - 1] = 0
             else:
                 return
@@ -43,12 +45,7 @@ def main():
         color_image = cv2.imread(get_color_path(label))
         gray_image = cv2.imread(get_gray_path(label))
 
-        color_image = cv2.cvtColor(color_image, cv2.COLOR_BGR2GRAY)
-        gray_image = cv2.cvtColor(gray_image, cv2.COLOR_BGR2GRAY)
-
-        color_image = cv2.resize(color_image, gray_image.shape)
-
-        (_, diff) = ssim(color_image, gray_image, full=True)
+        diff = get_ssim_diff_image(color_image, gray_image)
 
         plt.subplot(131)
         plt.xlabel('COLOR IMAGE')
@@ -78,6 +75,16 @@ def get_color_path(label: str) -> str:
 def get_gray_path(label: str) -> str:
     return f"{GRAY_PATH}/{label}_2.jpg"
 
+
+def get_ssim_diff_image(color_image: np.ndarray, gray_image: np.ndarray) -> np.ndarray:
+    color_image = cv2.cvtColor(color_image, cv2.COLOR_BGR2GRAY)
+    gray_image = cv2.cvtColor(gray_image, cv2.COLOR_BGR2GRAY)
+
+    color_image = cv2.resize(color_image, gray_image.shape)
+
+    (_, diff) = ssim(color_image, gray_image, full=True)
+    k
+    return diff
 
 
 if __name__=='__main__':

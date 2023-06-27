@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 from skimage.metrics import structural_similarity as ssim
 
-RESULT_PATH = './results.csv'
+RESULT_PATH = './results_TM.csv'
 COLOR_PATH = './dataset/Color'
 GRAY_PATH = './dataset/Gray'
 
@@ -62,13 +62,14 @@ def main():
         plt.xlabel(f'DIFF (INTENSITY={np.sum(diff):.0f})')
         plt.imshow(diff, cmap='gray')
 
-        plt.title(f"SSIM={df['ssim'][i]:.1f} | PSNR={df['psnr'][i]:.1f}")
+        plt.title(f"{i} | SSIM={df['ssim'][i]:.1f} | PSNR={df['psnr'][i]:.1f}")
 
         plt.show()
 
         # Checkpointing
         if i % 10 == 0:
             df.to_csv(RESULT_PATH, index=False)
+    df.to_csv(RESULT_PATH, index=False)
 
 
 def get_color_path(label: str) -> str:
